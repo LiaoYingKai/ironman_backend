@@ -4,8 +4,7 @@ const cheerio = require('cheerio')
 var express = require('express')
 var app = express()
 var list = []
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 3000;
 
 const ironmans = [
   'https://ithelp.ithome.com.tw/users/20107705/ironman/1898',
@@ -31,15 +30,15 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  async.map(ironmans, getIndo, (err, results) => {
+  async.map(ironmans, getInfo, (err, results) => {
     res.send(results);
   })
 })
 
-async.map(ironmans, getInfo, (err, results) => {
-  console.log(results)
-  list = results
-})
+// async.map(ironmans, getInfo, (err, results) => {
+//   console.log(results)
+//   list = results
+// })
 //...
 app.listen(PORT);
 // app.get('/', function(req, res) {
