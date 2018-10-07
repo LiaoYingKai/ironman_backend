@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "n"
+    "test": "n",
+    "start":"node index.js"
   },
   "author": "kai",
   "license": "ISC",

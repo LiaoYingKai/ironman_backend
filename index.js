@@ -22,17 +22,6 @@ const ironmans = [
   'https://ithelp.ithome.com.tw/users/20103075/ironman/1921',
 ]
 
-// app.get('/', function(req, res) {
-//   async.map(ironmans, getIndo, (err, results) => {
-//     res.send(results);
-//   })
-// })
-
-async.map(ironmans, getInfo, (err, results) => {
-  console.log(results)
-  list = results
-})
-
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -40,8 +29,19 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  res.send(list)
+  async.map(ironmans, getIndo, (err, results) => {
+    res.send(results);
+  })
 })
+
+async.map(ironmans, getInfo, (err, results) => {
+  console.log(results)
+  list = results
+})
+
+// app.get('/', function(req, res) {
+//   res.send(list)
+// })
 app.listen(3000)
 
 function getInfo(url, callback) {
