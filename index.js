@@ -30,7 +30,30 @@ const ironmans = [
   'https://ithelp.ithome.com.tw/users/20112157/ironman/1999',
   'https://ithelp.ithome.com.tw/users/20112452/ironman/2002',
 ]
-
+const contrastName = {
+  jasonyangbanana: 'Jason',
+  ken09326329: 'Kai',
+  soj: 'soj',
+  tedlee: 'Ted',
+  lai0706: 'Lai',
+  andyka1714: 'Andy',
+  albert194: 'Albery',
+  chris47: 'Chris',
+  gg831006: 'Jeremy',
+  serendipity: 'Ray',
+  mangosu: 'Mango',
+  henry97113: 'Henry',
+  oklalala: 'TonyLin',
+  leiadot: '日安',
+  jjltainan: 'Lester',
+  turtle0617: 'turtle',
+  ttn: 'ttn',
+  riverli: 'River',
+  angel2248664: '小魚',
+  mark9462: 'Jimmy',
+  nathand: 'Nathan',
+  jett: 'Jett',
+}
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -40,24 +63,17 @@ app.all('/', function(req, res, next) {
 app.get('/', function(req, res) {
   async.map(ironmans, getInfo, (err, results) => {
     res.send(results);
+    console.log(results)
   })
 })
-
-// async.map(ironmans, getInfo, (err, results) => {
-//   console.log(results)
-//   list = results
-// })
-//...
 app.listen(PORT);
-// app.get('/', function(req, res) {
-//   res.send(list)
-// })
 
 function getInfo(url, callback) {
   request(url, function(err, res, body) {
     var $ = cheerio.load(body)
     var link = url
     var name = $('.profile-header__name').text().trim()
+    name = nameChange(name)
     var title = $('.qa-list__title--ironman').text().trim().replace(' 系列', '')
     var joinDays = $('.qa-list__info--ironman span').eq(0).text().replace(/[^0-9]/g, '')
     var posts = $('.qa-list__info--ironman span').eq(1).text().replace(/[^0-9]/g, '')
@@ -88,3 +104,27 @@ function getInfo(url, callback) {
     });
   })
 }
+
+function nameChange(account) {
+  let accountArray = account.split("")
+  let name = []
+  for (let i = (accountArray.indexOf("(") + 1); i < accountArray.indexOf(")"); i++) {
+    name.push(accountArray[i])
+  }
+  name = name.join("")
+  return contrastName[name]
+}
+// async.map(ironmans, getInfo, (err, results) => {
+//   // res.send(results);
+//   console.log(results)
+// })
+
+
+// console.log(contrastName)
+//https://slack.com/api/users.list?token=xoxp-4772774963-383751005955-455053623381-01a5f8551542e462bd2525f7df91036e
+//slack api
+/*
+curl -X POST \
+--data-urlencode 'payload={"channel": "#fucking-kai", "username": "機器人", "text": "我來測試看看啦", "icon_emoji": ":bug:"}' \
+https://hooks.slack.com/services/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
+*/
